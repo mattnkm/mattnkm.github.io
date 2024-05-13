@@ -1,0 +1,18 @@
+project:
+  type: website
+
+website:
+  title: "mattnkm"
+  site-url: https://mattnkm.github.io
+  description: MNG
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/mattnkm
+format:
+  html:
+    theme: sandstone
+    css: styles.css
+editor: visual
+

@@ -9,29 +9,491 @@
 <link>https://mattnkm.github.io/</link>
 <atom:link href="https://mattnkm.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>MNG</description>
-<generator>quarto-1.4.550</generator>
-<lastBuildDate>Wed, 15 May 2024 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.4.554</generator>
+<lastBuildDate>Mon, 13 May 2024 14:00:00 GMT</lastBuildDate>
 <item>
-  <title>should affordable housing be for life?</title>
+  <title>bruneians by age and resident status</title>
   <dc:creator>Matthew Ng</dc:creator>
-  <link>https://mattnkm.github.io/posts/affordable housing for life?/</link>
+  <link>https://mattnkm.github.io/posts/population_pyramid_bn/population_pyramid.html</link>
   <description><![CDATA[ 
 
 
 
 
 
-<p>testing</p>
+<section id="libraries" class="level3">
+<h3 class="anchored" data-anchor-id="libraries">libraries</h3>
+<p>Main libraries in code block.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>show code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(librarian)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">shelf</span>(readxl, tidyverse, reshape2)</span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="introduction" class="level1">
+<h1>introduction</h1>
+<p>Last week, I found myself back in Brunei—not for the usual family visit, but for work and to give a talk on data science.</p>
+<p>It was a real blink-and-you-miss-it trip; barely three days on the ground.</p>
+<p>In true Bruneian fashion, we filled the time between meetings and talks by dining out. I think it was by our fourth restaurant visit that my colleague Thomas—a Kiwi and a first-timer in Brunei—asked in the most hilariously earnest way: “why aren’t there any locals running their own businesses?”</p>
+<p>To be honest, I was stumped. I knew we had a population of more or less half a million, but that was really the limit of what I could offer.</p>
+</section>
+<section id="data" class="level1">
+<h1>data</h1>
+<p>That was the inspiration for this post. I managed to collate and convert the terrible <code>.pdf</code> from the Department of Statistics into some usable tables.</p>
+<p>Thinking if anyone stumbled upon this blog, they’d maybe want to recreate this.</p>
+<p>The main data sets I collated from the table is the age group by nationality table (<code>BN_age_group_nationality.xlsx</code> in this post’s repo) from the published 2021 national census.</p>
+<p>The main data structure is pretty simple:</p>
+<ol type="1">
+<li><code>age_group</code>: Mostly at 5-year division, top-coded at 85+</li>
+<li><code>type</code>: categorical options at total, bruneian, permanent_resident, and temporary_resident</li>
+<li><code>male</code>: total number of males</li>
+<li><code>female</code>: total number of females</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>show code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># main data structure</span></span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_xlsx</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"BN_age_group_nationality.xlsx"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb2-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str</span>()</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [72 × 4] (S3: tbl_df/tbl/data.frame)
+ $ age_group: chr [1:72] "00-04" "05-09" "10-14" "15-19" ...
+ $ type     : chr [1:72] "total" "total" "total" "total" ...
+ $ male     : num [1:72] 14258 16658 16051 17365 19870 ...
+ $ female   : num [1:72] 13097 15276 15036 16425 17229 ...</code></pre>
+</div>
+</div>
+<section id="processing" class="level2">
+<h2 class="anchored" data-anchor-id="processing">processing</h2>
+<p>The only real processing we need to do is to get the lower age limit for each of the age groups within the data set. That’s relatively simple with the following code:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>show code</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># read as age_group object</span></span>
+<span id="cb4-2">age_group <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_xlsx</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"BN_age_group_nationality.xlsx"</span>)</span>
+<span id="cb4-3"></span>
+<span id="cb4-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># get first two characters from column</span></span>
+<span id="cb4-5">age_group <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> age_group <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb4-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lower_age =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">substr</span>(age_group, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb4-7">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># reposition to second column</span></span>
+<span id="cb4-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">relocate</span>(lower_age, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.before =</span> age_group)</span>
+<span id="cb4-9"></span>
+<span id="cb4-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># final dataset</span></span>
+<span id="cb4-11">age_group</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 72 × 5
+   lower_age age_group type   male female
+   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;
+ 1 00        00-04     total 14258  13097
+ 2 05        05-09     total 16658  15276
+ 3 10        10-14     total 16051  15036
+ 4 15        15-19     total 17365  16425
+ 5 20        20-24     total 19870  17229
+ 6 25        25-29     total 22698  18408
+ 7 30        30-34     total 22630  17904
+ 8 35        35-39     total 21289  17136
+ 9 40        40-44     total 19231  16232
+10 45        45-49     total 16463  15079
+# ℹ 62 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="pyramids" class="level1">
+<h1>pyramids</h1>
+<p>To get a better sense of our population in 2021, we’ll make 3 pyramids for the total by age group, a facet by nationality, and a per capita by nationality graph.</p>
+<section id="population-by-age-group" class="level2">
+<h2 class="anchored" data-anchor-id="population-by-age-group">population by age group</h2>
+<p>In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What I find particularly interesting is the odd bulge at around 20-45 for men. At this subset, men outnumbered women by an average of about 21.5%, compared to the overall difference per age group of around 4.6%, which suggests an external mechanism.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>show code</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># total population by age group</span></span>
+<span id="cb6-2">age_group <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb6-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(type <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"total"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb6-4">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># melt for male and female</span></span>
+<span id="cb6-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">melt</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">value.name =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"total"</span>,</span>
+<span id="cb6-6">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">variable.name =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gender"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb6-7">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># plot</span></span>
+<span id="cb6-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> gender, </span>
+<span id="cb6-9">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> lower_age, </span>
+<span id="cb6-10">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ifelse</span>(</span>
+<span id="cb6-11">               <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">test =</span> gender <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"male"</span>,</span>
+<span id="cb6-12">               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># flip the values to the negative</span></span>
+<span id="cb6-13">               <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yes =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>total,</span>
+<span id="cb6-14">               <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">no =</span> total),</span>
+<span id="cb6-15">             )) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-16">         <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_col</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-17">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># flip the y-axis</span></span>
+<span id="cb6-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_flip</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-19">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_continuous</span>(</span>
+<span id="cb6-20">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> abs, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># set as absolute to remove negative sign</span></span>
+<span id="cb6-21">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">limits =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25000</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25000</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># set limits aesthetics</span></span>
+<span id="cb6-22">    ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-23">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb6-24">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"total"</span>,</span>
+<span id="cb6-25">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"age group"</span>,</span>
+<span id="cb6-26">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"population by age group"</span></span>
+<span id="cb6-27">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># change color with brewer</span></span>
+<span id="cb6-28">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_brewer</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">palette =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Set1"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-29">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://mattnkm.github.io/posts/population_pyramid_bn/population_pyramid_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="age-groups-by-nationality" class="level2">
+<h2 class="anchored" data-anchor-id="age-groups-by-nationality">age groups by nationality</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>show code</summary>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># total population by age group</span></span>
+<span id="cb7-2">age_group <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-3">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#filter out total</span></span>
+<span id="cb7-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(type <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"total"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-5">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># melt for male and female</span></span>
+<span id="cb7-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">melt</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">value.name =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"total"</span>,</span>
+<span id="cb7-7">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">variable.name =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gender"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-8">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># plot</span></span>
+<span id="cb7-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> gender, </span>
+<span id="cb7-10">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> lower_age, </span>
+<span id="cb7-11">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ifelse</span>(</span>
+<span id="cb7-12">               <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">test =</span> gender <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"male"</span>,</span>
+<span id="cb7-13">               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># flip the values to the negative</span></span>
+<span id="cb7-14">               <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yes =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>total,</span>
+<span id="cb7-15">               <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">no =</span> total),</span>
+<span id="cb7-16">             )) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-17">         <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_col</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-18">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># flip the y-axis</span></span>
+<span id="cb7-19">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_flip</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_continuous</span>(</span>
+<span id="cb7-21">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> abs, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># set as absolute to remove negative sign</span></span>
+<span id="cb7-22">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># limits = c(-30000, 30000) # set limits aesthetics</span></span>
+<span id="cb7-23">    ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-24">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb7-25">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"total"</span>,</span>
+<span id="cb7-26">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"age group"</span>,</span>
+<span id="cb7-27">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"population by age group"</span></span>
+<span id="cb7-28">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># change color with brewer</span></span>
+<span id="cb7-29">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_brewer</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">palette =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Set1"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-30">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>type) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-31">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://mattnkm.github.io/posts/population_pyramid_bn/population_pyramid_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="per-capita-by-nationality" class="level2">
+<h2 class="anchored" data-anchor-id="per-capita-by-nationality">per capita by nationality</h2>
 
 
+</section>
+</section>
 
  ]]></description>
-  <category>housing</category>
-  <guid>https://mattnkm.github.io/posts/affordable housing for life?/</guid>
-  <pubDate>Wed, 15 May 2024 00:00:00 GMT</pubDate>
+  <category>brunei</category>
+  <category>statistics</category>
+  <guid>https://mattnkm.github.io/posts/population_pyramid_bn/population_pyramid.html</guid>
+  <pubDate>Mon, 13 May 2024 14:00:00 GMT</pubDate>
 </item>
 <item>
-  <title>Welcome To My Blog</title>
+  <title>hi there!</title>
   <dc:creator>Matthew Ng</dc:creator>
   <link>https://mattnkm.github.io/posts/welcome/</link>
   <description><![CDATA[ 
@@ -40,7 +502,7 @@
 
 
 
-<p>Hello everyone!</p>
+<p>Hello everyone</p>
 <p>I’m Matt!</p>
 <p>I thought I’d start the switch from handwriting journals to something a little more versatile.</p>
 <p>Think I might want to use this to share some out-of-work coding; perhaps also my thoughts on academia, data science, and miscellaneous life.</p>
@@ -50,7 +512,7 @@
  ]]></description>
   <category>news</category>
   <guid>https://mattnkm.github.io/posts/welcome/</guid>
-  <pubDate>Mon, 13 May 2024 00:00:00 GMT</pubDate>
+  <pubDate>Sun, 12 May 2024 14:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

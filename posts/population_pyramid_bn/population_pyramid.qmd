@@ -1,0 +1,146 @@
+---
+title: "bruneians by age and resident status"
+description: "hellow"
+author: "Matthew Ng"
+type: default
+date: "2024-05-14"
+categories: [brunei, statistics]
+format:
+  html:
+    code-fold: true
+    code-summary: "show code"
+---
+
+### libraries
+
+Main libraries in code block.
+
+```{r library, echo = T, message = F, warning = F}
+library(librarian)
+shelf(readxl, tidyverse, reshape2)
+```
+
+# introduction
+
+Last week, I found myself back in Brunei—not for the usual family visit, but for work and to give a talk on data science.
+
+It was a real blink-and-you-miss-it trip; barely three days on the ground.
+
+In true Bruneian fashion, we filled the time between meetings and talks by dining out. I think it was by our fourth restaurant visit that my colleague Thomas—a Kiwi and a first-timer in Brunei—asked in the most hilariously earnest way: "why aren't there any locals running their own businesses?"
+
+To be honest, I was stumped. I knew we had a population of more or less half a million, but that was really the limit of what I could offer.
+
+# data
+
+That was the inspiration for this post. I managed to collate and convert the terrible `.pdf` from the Department of Statistics into some usable tables.
+
+Thinking if anyone stumbled upon this blog, they'd maybe want to recreate this.
+
+The main data sets I collated from the table is the age group by nationality table (`BN_age_group_nationality.xlsx` in this post's repo) from the published 2021 national census.
+
+The main data structure is pretty simple:
+
+1.  `age_group`: Mostly at 5-year division, top-coded at 85+
+2.  `type`: categorical options at total, bruneian, permanent_resident, and temporary_resident
+3.  `male`: total number of males
+4.  `female`: total number of females
+
+```{r}
+# main data structure
+read_xlsx("BN_age_group_nationality.xlsx") %>% 
+  str()
+```
+
+## processing
+
+The only real processing we need to do is to get the lower age limit for each of the age groups within the data set. That's relatively simple with the following code:
+
+```{r}
+# read as age_group object
+age_group <- read_xlsx("BN_age_group_nationality.xlsx")
+
+# get first two characters from column
+age_group <- age_group %>%
+  mutate(lower_age = substr(age_group, 1, 2)) %>% 
+  # reposition to second column
+  relocate(lower_age, .before = age_group)
+
+# final dataset
+age_group
+```
+
+# pyramids
+
+To get a better sense of our population in 2021, we'll make 3 pyramids for the total by age group, a facet by nationality, and a per capita by nationality graph.
+
+## population by age group
+In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What I find particularly interesting is the odd bulge at around 20-45 for men. At this subset, men outnumbered women by an average of about 21.5%, compared to the overall difference per age group of around 4.6%, which suggests an external mechanism.
+
+```{r message = F, warning = F, echo = T}
+# total population by age group
+age_group %>%
+  filter(type == "total") %>% 
+  # melt for male and female
+  melt(value.name = "total",
+       variable.name = "gender") %>%
+  # plot
+  ggplot(aes(fill = gender, 
+             x = lower_age, 
+             y = ifelse(
+               test = gender == "male",
+               # flip the values to the negative
+               yes = -total,
+               no = total),
+             )) +
+         geom_col(alpha = 0.9) +
+  # flip the y-axis
+  coord_flip() +
+  scale_y_continuous(
+    labels = abs, # set as absolute to remove negative sign
+    limits = c(-25000, 25000) # set limits aesthetics
+    ) +
+  labs(
+    x = "total",
+    y = "age group",
+    title = "population by age group"
+  ) + # change color with brewer
+  scale_fill_brewer(palette = "Set1") +
+  theme_minimal()
+```
+
+## age groups by nationality
+```{r message = F, warning = F, echo = T}
+# total population by age group
+age_group %>%
+  #filter out total
+  filter(type != "total") %>%
+  # melt for male and female
+  melt(value.name = "total",
+       variable.name = "gender") %>%
+  # plot
+  ggplot(aes(fill = gender, 
+             x = lower_age, 
+             y = ifelse(
+               test = gender == "male",
+               # flip the values to the negative
+               yes = -total,
+               no = total),
+             )) +
+         geom_col(alpha = 0.9) +
+  # flip the y-axis
+  coord_flip() +
+  scale_y_continuous(
+    labels = abs, # set as absolute to remove negative sign
+    # limits = c(-30000, 30000) # set limits aesthetics
+    ) +
+  labs(
+    x = "total",
+    y = "age group",
+    title = "population by age group"
+  ) + # change color with brewer
+  scale_fill_brewer(palette = "Set1") +
+  facet_wrap(~type) +
+  theme_minimal()
+```
+
+## per capita by nationality

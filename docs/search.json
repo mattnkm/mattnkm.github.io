@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "spatial + (an)others",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nshould affordable housing be for life?\n\n\n\n\n\n\nhousing\n\n\n\n\n\n\n\n\n\nMay 15, 2024\n\n\nMatthew Ng\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMay 13, 2024\n\n\nMatthew Ng\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nbruneians by age and resident status\n\n\n\n\n\n\nbrunei\n\n\nstatistics\n\n\n\nhellow\n\n\n\n\n\nMay 14, 2024\n\n\nMatthew Ng\n\n\n\n\n\n\n\n\n\n\n\n\nhi there!\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMay 13, 2024\n\n\nMatthew Ng\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/post-with-code/index.html",
@@ -37,9 +37,9 @@
   {
     "objectID": "posts/welcome/index.html",
     "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
+    "title": "hi there!",
     "section": "",
-    "text": "Hello everyone!\nI’m Matt!\nI thought I’d start the switch from handwriting journals to something a little more versatile.\nThink I might want to use this to share some out-of-work coding; perhaps also my thoughts on academia, data science, and miscellaneous life."
+    "text": "Hello everyone\nI’m Matt!\nI thought I’d start the switch from handwriting journals to something a little more versatile.\nThink I might want to use this to share some out-of-work coding; perhaps also my thoughts on academia, data science, and miscellaneous life."
   },
   {
     "objectID": "posts/affordable housing for life?/index.html",
@@ -47,5 +47,40 @@
     "title": "should affordable housing be for life?",
     "section": "",
     "text": "testing"
+  },
+  {
+    "objectID": "posts/population_pyramid_bn/population_pyramid.html",
+    "href": "posts/population_pyramid_bn/population_pyramid.html",
+    "title": "bruneians by age and resident status",
+    "section": "",
+    "text": "Main libraries in code block.\n\n\nshow code\nlibrary(librarian)\nshelf(readxl, tidyverse, reshape2)"
+  },
+  {
+    "objectID": "posts/population_pyramid_bn/population_pyramid.html#population-by-age-group",
+    "href": "posts/population_pyramid_bn/population_pyramid.html#population-by-age-group",
+    "title": "bruneians by age and resident status",
+    "section": "population by age group",
+    "text": "population by age group\nIn the grand scheme of things, men outnumber women in Brunei by around 11.4%. What I find particularly interesting is the odd bulge at around 20-45 for men. At this subset, men outnumbered women by an average of about 21.5%, compared to the overall difference per age group of around 4.6%, which suggests an external mechanism.\n\n\nshow code\n# total population by age group\nage_group %&gt;%\n  filter(type == \"total\") %&gt;% \n  # melt for male and female\n  melt(value.name = \"total\",\n       variable.name = \"gender\") %&gt;%\n  # plot\n  ggplot(aes(fill = gender, \n             x = lower_age, \n             y = ifelse(\n               test = gender == \"male\",\n               # flip the values to the negative\n               yes = -total,\n               no = total),\n             )) +\n         geom_col(alpha = 0.9) +\n  # flip the y-axis\n  coord_flip() +\n  scale_y_continuous(\n    labels = abs, # set as absolute to remove negative sign\n    limits = c(-25000, 25000) # set limits aesthetics\n    ) +\n  labs(\n    x = \"total\",\n    y = \"age group\",\n    title = \"population by age group\"\n  ) + # change color with brewer\n  scale_fill_brewer(palette = \"Set1\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/population_pyramid_bn/population_pyramid.html#age-groups-by-nationality",
+    "href": "posts/population_pyramid_bn/population_pyramid.html#age-groups-by-nationality",
+    "title": "bruneians by age and resident status",
+    "section": "age groups by nationality",
+    "text": "age groups by nationality\n\n\nshow code\n# total population by age group\nage_group %&gt;%\n  #filter out total\n  filter(type != \"total\") %&gt;%\n  # melt for male and female\n  melt(value.name = \"total\",\n       variable.name = \"gender\") %&gt;%\n  # plot\n  ggplot(aes(fill = gender, \n             x = lower_age, \n             y = ifelse(\n               test = gender == \"male\",\n               # flip the values to the negative\n               yes = -total,\n               no = total),\n             )) +\n         geom_col(alpha = 0.9) +\n  # flip the y-axis\n  coord_flip() +\n  scale_y_continuous(\n    labels = abs, # set as absolute to remove negative sign\n    # limits = c(-30000, 30000) # set limits aesthetics\n    ) +\n  labs(\n    x = \"total\",\n    y = \"age group\",\n    title = \"population by age group\"\n  ) + # change color with brewer\n  scale_fill_brewer(palette = \"Set1\") +\n  facet_wrap(~type) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/population_pyramid_bn/population_pyramid.html#per-capita-by-nationality",
+    "href": "posts/population_pyramid_bn/population_pyramid.html#per-capita-by-nationality",
+    "title": "bruneians by age and resident status",
+    "section": "per capita by nationality",
+    "text": "per capita by nationality"
+  },
+  {
+    "objectID": "posts/population_pyramid_bn/population_pyramid.html#processing",
+    "href": "posts/population_pyramid_bn/population_pyramid.html#processing",
+    "title": "bruneians by age and resident status",
+    "section": "processing",
+    "text": "processing\nThe only real processing we need to do is to get the lower age limit for each of the age groups within the data set. That’s relatively simple with the following code:\n\n\nshow code\n# read as age_group object\nage_group &lt;- read_xlsx(\"BN_age_group_nationality.xlsx\")\n\n# get first two characters from column\nage_group &lt;- age_group %&gt;%\n  mutate(lower_age = substr(age_group, 1, 2)) %&gt;% \n  # reposition to second column\n  relocate(lower_age, .before = age_group)\n\n# final dataset\nage_group\n\n\n# A tibble: 72 × 5\n   lower_age age_group type   male female\n   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;\n 1 00        00-04     total 14258  13097\n 2 05        05-09     total 16658  15276\n 3 10        10-14     total 16051  15036\n 4 15        15-19     total 17365  16425\n 5 20        20-24     total 19870  17229\n 6 25        25-29     total 22698  18408\n 7 30        30-34     total 22630  17904\n 8 35        35-39     total 21289  17136\n 9 40        40-44     total 19231  16232\n10 45        45-49     total 16463  15079\n# ℹ 62 more rows"
   }
 ]

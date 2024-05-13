@@ -22,17 +22,19 @@ shelf(readxl, tidyverse, reshape2)
 
 # introduction
 
-Last week, I found myself back in Brunei—not for the usual family visit, but for work and to give a talk on data science.
+Last week, I found myself back in Brunei—not for the usual family visit, but for a bunch of work meetings and to give a talk on data science.
 
 It was a real blink-and-you-miss-it trip; barely three days on the ground.
 
 In true Bruneian fashion, we filled the time between meetings and talks by dining out. I think it was by our fourth restaurant visit that my colleague Thomas—a Kiwi and a first-timer in Brunei—asked in the most hilariously earnest way: "why aren't there any locals running their own businesses?"
 
-To be honest, I was stumped. I knew we had a population of more or less half a million, but that was really the limit of what I could offer.
+To be honest, I didn't know --- I spent most of my first 18 years there, and it had always really been this . I mean  knew we had a population of more or less half a million, but that was really the limit of what I could offer him.
 
 # data
 
-That was the inspiration for this post. I managed to collate and convert the terrible `.pdf` from the Department of Statistics into some usable tables.
+That was the inspiration for this post.
+
+I managed to collate and convert the terrible `.pdf` from the Department of Statistics into some usable tables.
 
 Thinking if anyone stumbled upon this blog, they'd maybe want to recreate this.
 
@@ -74,6 +76,7 @@ age_group
 To get a better sense of our population in 2021, we'll make 3 pyramids for the total by age group, a facet by nationality, and a per capita by nationality graph.
 
 ## population by age group
+
 In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What I find particularly interesting is the odd bulge at around 20-45 for men. At this subset, men outnumbered women by an average of about 21.5%, compared to the overall difference per age group of around 4.6%.
 
 ```{r message = F, warning = F, echo = T}
@@ -109,7 +112,8 @@ age_group %>%
 ```
 
 ## age groups by nationality
-This is where we really see the reason why. 
+
+This is where we really see the reason why.
 
 ```{r message = F, warning = F, echo = T}
 # total population by age group
@@ -146,7 +150,9 @@ age_group %>%
   theme_minimal()
 ```
 
-```{r}
+We can see here that temporary residents make up quite a large proportion of the general population. In fact, overall, they constitute up to 34.4% across both genders. 
+
+```{r message = F, warning = F, echo = T}
 age_group %>% 
   filter(type != "total") %>%
   melt(value.name = "total",
@@ -161,9 +167,12 @@ age_group %>%
   mutate(
     bruneian = bruneian/total * 100,
     permanent_resident = permanent_resident/total * 100,
-    temporary_resident = temporary_resident/total * 100)
+    temporary_resident = temporary_resident/total * 100) %>% 
+  select(-total)
 ```
-```{r}
+Among men aged 20 to 49, the percentage of temporary residents can reach as high as 40% in certain age groups.
+
+```{r message = F, warning = F, echo = T}
 age_group %>% 
   filter(type != "total") %>%
   melt(value.name = "total",
@@ -184,9 +193,45 @@ age_group %>%
   mutate(
     bruneian = bruneian/total * 100,
     permanent_resident = permanent_resident/total * 100,
-    temporary_resident = temporary_resident/total * 100)
+    temporary_resident = temporary_resident/total * 100) %>% 
+  select(-total)
 ```
-
-
 ## per capita by nationality
+Final pyramids show per capita of the age group and gender. It is the most telling of the nation's overall population structure.
 
+We can draw our own conclusions here on the implications on the Bruneian system.
+```{r message = F, warning = F}
+age_group %>% 
+  filter(type != "total") %>% 
+  group_by(type) %>% 
+  mutate(total_m = sum(male),
+         total_f = sum(female),
+         `per capita male` = (male/total_m) * 100,
+         `per capita female` = (female/total_f) * 100) %>% 
+  select(lower_age, `per capita male`, `per capita female`) %>% 
+  melt(variable.name = "gender",
+       value.name = "total") %>% 
+  ggplot(aes(fill = gender, 
+             x = lower_age, 
+             y = ifelse(
+               test = gender == "per capita male",
+               # flip the values to the negative
+               yes = -total,
+               no = total),
+             )) +
+         geom_col(alpha = 0.9) +
+  # flip the y-axis
+  coord_flip() +
+  facet_wrap(~type) +
+  scale_y_continuous(
+    labels = abs, # set as absolute to remove negative sign
+    limits = c(-20, 20) # set limits aesthetics
+    ) +
+  labs(
+    x = "total",
+    y = "age group",
+    title = "population by age group"
+  ) + # change color with brewer
+  scale_fill_brewer(palette = "Set1") +
+  theme_minimal()
+```

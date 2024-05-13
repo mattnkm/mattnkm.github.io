@@ -74,7 +74,7 @@ age_group
 To get a better sense of our population in 2021, we'll make 3 pyramids for the total by age group, a facet by nationality, and a per capita by nationality graph.
 
 ## population by age group
-In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What I find particularly interesting is the odd bulge at around 20-45 for men. At this subset, men outnumbered women by an average of about 21.5%, compared to the overall difference per age group of around 4.6%, which suggests an external mechanism.
+In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What I find particularly interesting is the odd bulge at around 20-45 for men. At this subset, men outnumbered women by an average of about 21.5%, compared to the overall difference per age group of around 4.6%.
 
 ```{r message = F, warning = F, echo = T}
 # total population by age group
@@ -109,14 +109,17 @@ age_group %>%
 ```
 
 ## age groups by nationality
+This is where we really see the reason why. 
+
 ```{r message = F, warning = F, echo = T}
 # total population by age group
 age_group %>%
   #filter out total
   filter(type != "total") %>%
   # melt for male and female
-  melt(value.name = "total",
-       variable.name = "gender") %>%
+  melt(
+    value.name = "total",
+    variable.name = "gender") %>%
   # plot
   ggplot(aes(fill = gender, 
              x = lower_age, 
@@ -143,4 +146,47 @@ age_group %>%
   theme_minimal()
 ```
 
+```{r}
+age_group %>% 
+  filter(type != "total") %>%
+  melt(value.name = "total",
+       variable.name = "gender") %>% 
+  # filter(age_group %in% c("20-24", "25-29", "30-34", "35-39", "40-44")) %>% 
+  group_by(age_group, type) %>%
+  summarise(total = sum(total)) %>% 
+  # pivot wider
+  pivot_wider(names_from = type, values_from = total) %>% 
+  mutate(total = bruneian + permanent_resident + temporary_resident) %>% 
+  # percentage of total
+  mutate(
+    bruneian = bruneian/total * 100,
+    permanent_resident = permanent_resident/total * 100,
+    temporary_resident = temporary_resident/total * 100)
+```
+```{r}
+age_group %>% 
+  filter(type != "total") %>%
+  melt(value.name = "total",
+       variable.name = "gender") %>% 
+  filter(age_group %in% c("20-24", 
+                          "25-29", 
+                          "30-34", 
+                          "35-39", 
+                          "40-44", 
+                          "45-49")) %>% 
+  group_by(age_group, type, gender) %>%
+  filter(gender == "male") %>% 
+  summarise(total = sum(total)) %>% 
+  # pivot wider
+  pivot_wider(names_from = type, values_from = total) %>% 
+  mutate(total = bruneian + permanent_resident + temporary_resident) %>% 
+  # percentage of total
+  mutate(
+    bruneian = bruneian/total * 100,
+    permanent_resident = permanent_resident/total * 100,
+    temporary_resident = temporary_resident/total * 100)
+```
+
+
 ## per capita by nationality
+

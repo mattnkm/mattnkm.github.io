@@ -5,7 +5,7 @@ date: "2024-05-13"
 categories: [news]
 ---
 
-Hello everyone!
+Hello everyone
 
 I'm Matt!
 

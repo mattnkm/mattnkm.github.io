@@ -1,6 +1,6 @@
 ---
 title: "should affordable housing be for life?"
-date: "15/05/2024"
+date: "2024-05-15"
 author: "Matthew Ng"
 categories: [housing]
 ---

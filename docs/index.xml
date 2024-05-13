@@ -47,7 +47,7 @@ font-style: inherit;">1</span></span></code></pre></div>
 </item>
 <item>
   <title>Welcome To My Blog</title>
-  <dc:creator>Tristan O&#39;Malley</dc:creator>
+  <dc:creator>Matthew Ng</dc:creator>
   <link>https://mattnkm.github.io/posts/welcome/</link>
   <description><![CDATA[ 
 
@@ -55,16 +55,17 @@ font-style: inherit;">1</span></span></code></pre></div>
 
 
 
-<p>This is the first post in a Quarto blog. Welcome!</p>
-<p><img src="https://mattnkm.github.io/posts/welcome/thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+<p>Hello everyone!</p>
+<p>I’m Matt!</p>
+<p>I thought I’d start the switch from handwriting journals to something a little more versatile.</p>
+<p>Think I might want to use this to share some out-of-work coding; perhaps also my thoughts on academia, data science, and miscellaneous life.</p>
 
 
 
  ]]></description>
   <category>news</category>
   <guid>https://mattnkm.github.io/posts/welcome/</guid>
-  <pubDate>Thu, 09 May 2024 14:00:00 GMT</pubDate>
+  <pubDate>Sun, 12 May 2024 14:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

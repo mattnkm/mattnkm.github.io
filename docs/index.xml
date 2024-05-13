@@ -9,8 +9,27 @@
 <link>https://mattnkm.github.io/</link>
 <atom:link href="https://mattnkm.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>MNG</description>
-<generator>quarto-1.4.554</generator>
-<lastBuildDate>Sun, 12 May 2024 14:00:00 GMT</lastBuildDate>
+<generator>quarto-1.4.550</generator>
+<lastBuildDate>Wed, 05 Mar 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>should affordable housing be for life?</title>
+  <dc:creator>Matthew Ng</dc:creator>
+  <link>https://mattnkm.github.io/posts/affordable housing for life?/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>.</p>
+
+
+
+ ]]></description>
+  <category>housing</category>
+  <guid>https://mattnkm.github.io/posts/affordable housing for life?/</guid>
+  <pubDate>Wed, 05 Mar 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Welcome To My Blog</title>
   <dc:creator>Matthew Ng</dc:creator>
@@ -31,7 +50,7 @@
  ]]></description>
   <category>news</category>
   <guid>https://mattnkm.github.io/posts/welcome/</guid>
-  <pubDate>Sun, 12 May 2024 14:00:00 GMT</pubDate>
+  <pubDate>Mon, 13 May 2024 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

@@ -1,6 +1,5 @@
 ---
-title: "bruneians by age and resident status"
-description: "hellow"
+title: "why don't Bruneians run their own businesses?"
 author: "Matthew Ng"
 type: default
 date: "2024-05-14"
@@ -11,6 +10,14 @@ format:
     code-summary: "show code"
 ---
 
+Last week, I found myself back in Brunei—not for the usual family visit, but for a bunch of work meetings and a talk on data science.
+
+It was a blink-and-you-miss-it trip; barely three days on the ground.
+
+In true Bruneian fashion, we spent the time between meetings and talks dining out. By our fourth restaurant visit, my colleague Thomas—a Kiwi and a first-timer in Brunei—asked in the most hilariously earnest way: "Why aren't there any locals running their own businesses?"
+
+Honestly, I didn’t know. I spent most of my first 18 years here, and it’s always been like this. I knew we had a population of around half a million, but that’s all I could tell him.
+
 ### libraries
 
 Main libraries in code block.
@@ -19,16 +26,6 @@ Main libraries in code block.
 library(librarian)
 shelf(readxl, tidyverse, reshape2)
 ```
-
-# introduction
-
-Last week, I found myself back in Brunei—not for the usual family visit, but for a series of work meetings and to give a talk on data science.
-
-It was a blink-and-you-miss-it trip; barely three days on the ground.
-
-In true Bruneian fashion, we spent the time between meetings and talks dining out. By our fourth restaurant visit, my colleague Thomas—a Kiwi and a first-timer in Brunei—asked in the most hilariously earnest way: "Why aren't there any locals running their own businesses?"
-
-To be honest, I didn't know. I spent most of my first 18 years there, and it had always been like this. I knew we had a population of around half a million, but that was about all I could offer him.
 
 # data
 
@@ -56,7 +53,7 @@ read_xlsx("BN_age_group_nationality.xlsx") %>%
 
 ## processing
 
-The only real processing we need to do is to get the lower age limit for each of the age groups within the data set. That's relatively simple with the following code:
+The only real processing we need to do is to get the lower age limit for each of the age groups within the dataset. That's relatively simple with the following code:
 
 ```{r}
 # read as age_group object
@@ -72,13 +69,20 @@ age_group <- age_group %>%
 age_group
 ```
 
+This code snippet loads the dataset, extracts the lower age limit from the age group, and adds it as a new column in the dataframe.
+
 # pyramids
 
-To get a better sense of our population in 2021, we'll create three charts: a population pyramid by age group, a faceted pyramid by nationality, and a gender group per capita by nationality graph.
+To get a better sense of our population in 2021, we'll create three charts:
+
+1.  Population by age group for the differences between male and female populations.
+
+2.  Faceted pyramid by nationality for structure variation among Bruneians, permanent residents, and temporary residents.
+
+3.  Gender and age group per residential capita for subgroup contribution to the overall population.
 
 ## population by age group
-
-In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What's particularly interesting is the noticeable bulge in the 20-45 age range for men. In this subset, men outnumber women by an average of about 21.5%, compared to the overall difference per age group of around 4.6%.
+In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What's particularly interesting is the noticeable bulge in the 20-45 age range for men. In this subset, men outnumber women by an average of about 21.5%, compared to the overall average difference per age group of around 4.6%.
 
 ```{r message = F, warning = F, echo = T}
 # total population by age group
@@ -151,7 +155,7 @@ age_group %>%
   theme_minimal()
 ```
 
-Temporary residents make up a significant proportion of the general population, constituting up to 34.4% across both genders. Among men aged 20 to 49, this percentage can reach as high as 40% in certain age groups.
+Temporary residents make up a significant proportion of the general population, constituting up to 34.4% across both genders. 
 
 ```{r message = F, warning = F, echo = T}
 age_group %>% 
@@ -172,7 +176,7 @@ age_group %>%
   select(-total)
 ```
 
-Among men aged 20 to 49, this percentage can reach as high as 40% in certain age groups.
+Among men aged 20 to 49, this percentage can reach as high as 40% in certain age groups. 
 
 ```{r message = F, warning = F, echo = T}
 age_group %>% 
@@ -199,9 +203,11 @@ age_group %>%
   select(-total)
 ```
 
-## per capita of gender and nationality
+## Gender and age group per residential capita
 
-The proportion of temporary residents in the 20-45 age group is pretty huge, with over 70% of them falling into this range. 
+The proportion of temporary residents in the 20-45 age group is pretty huge, with over 70% of them falling into this range.
+
+I think the current distribution really shows how important temporary workers are to our economy and the labour gaps we're facing. Most of these immigrants are in the 20-45 age range, which makes you wonder if we should let them stay on as permanent residents or even citizens, especially since they've contributed so much to nation-building during the prime of their working lives. Are we ready for this, and will they fit in a way that feels right to Bruneians? Plus, how will our migration policies change as our young Bruneian population ages and starts to fill these age groups and labour roles? 
 
 ```{r message = F, warning = F}
 shelf(gganimate, png, gifski)
@@ -242,8 +248,6 @@ pop_pyr <- age_group %>%
 pop_pyr
 ```
 
-This big chunk of the population raises some interesting questions about what their presence means for us. The main question is whether we should let these temporary residents stay as permanent residents or even citizens to keep our population and workforce stable. If we need these workers long-term to support the economy, what are the effects of integrating them into our society? Are we ready to support their integration, and will they fit into the community in a way that feels right to Bruneians?
+Going back to the original question: why aren't there more locals running their own businesses? Maybe Thomas was only seeing part of the picture. It’s hard to say since there are so many factors at play. It could be a mix of having a young local population and a cultural aversion to front-facing or physical labour roles. Maybe Bruneian business owners don't even want to hire locals or can't pay local wages, which is an even bigger issue.
 
-Also, since many of these temporary residents spend most of their prime working years in Brunei, should there be a way for them to become citizens since they've contributed to nation-building? How will our migration policies change, especially as our mostly young Bruneian population gets older and starts filling these age groups/labour roles?
-
-Going back to the original question: why aren't there more locals running their own businesses? Maybe Thomas was only seeing part of the picture. It’s tough to say since there are many factors at play. It seems to be a mix of having a young local population and a cultural aversion for front-facing or physical labor roles. It would be interesting to find out which parts of the workforce these temporary residents are in—especially the men. What industries are they in, and are they taking on roles that the local (predominantly male) workforce can't handle?
+It would be interesting to find out exactly where these temporary residents are working—especially the men. What industries are they in, and are they taking on roles that the local (mostly male) workforce can't handle?

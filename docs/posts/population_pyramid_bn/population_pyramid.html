@@ -8,9 +8,8 @@
 
 <meta name="author" content="Matthew Ng">
 <meta name="dcterms.date" content="2024-05-14">
-<meta name="description" content="hellow">
 
-<title>mattnkm - bruneians by age and resident status</title>
+<title>mattnkm - why don’t Bruneians run their own businesses?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -145,13 +144,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">bruneians by age and resident status</h1>
-                  <div>
-        <div class="description">
-          hellow
-        </div>
-      </div>
-                          <div class="quarto-categories">
+      <h1 class="title">why don’t Bruneians run their own businesses?</h1>
+                                <div class="quarto-categories">
                 <div class="quarto-category">brunei</div>
                 <div class="quarto-category">statistics</div>
               </div>
@@ -190,6 +184,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+<p>Last week, I found myself back in Brunei—not for the usual family visit, but for a bunch of work meetings and a talk on data science.</p>
+<p>It was a blink-and-you-miss-it trip; barely three days on the ground.</p>
+<p>In true Bruneian fashion, we spent the time between meetings and talks dining out. By our fourth restaurant visit, my colleague Thomas—a Kiwi and a first-timer in Brunei—asked in the most hilariously earnest way: “Why aren’t there any locals running their own businesses?”</p>
+<p>Honestly, I didn’t know. I spent most of my first 18 years here, and it’s always been like this. I knew we had a population of around half a million, but that’s all I could tell him.</p>
 <section id="libraries" class="level3">
 <h3 class="anchored" data-anchor-id="libraries">libraries</h3>
 <p>Main libraries in code block.</p>
@@ -200,13 +198,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shelf</span>(readxl, tidyverse, reshape2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="introduction" class="level1">
-<h1>introduction</h1>
-<p>Last week, I found myself back in Brunei—not for the usual family visit, but for a series of work meetings and to give a talk on data science.</p>
-<p>It was a blink-and-you-miss-it trip; barely three days on the ground.</p>
-<p>In true Bruneian fashion, we spent the time between meetings and talks dining out. By our fourth restaurant visit, my colleague Thomas—a Kiwi and a first-timer in Brunei—asked in the most hilariously earnest way: “Why aren’t there any locals running their own businesses?”</p>
-<p>To be honest, I didn’t know. I spent most of my first 18 years there, and it had always been like this. I knew we had a population of around half a million, but that was about all I could offer him.</p>
 </section>
 <section id="data" class="level1">
 <h1>data</h1>
@@ -237,7 +228,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="processing" class="level2">
 <h2 class="anchored" data-anchor-id="processing">processing</h2>
-<p>The only real processing we need to do is to get the lower age limit for each of the age groups within the data set. That’s relatively simple with the following code:</p>
+<p>The only real processing we need to do is to get the lower age limit for each of the age groups within the dataset. That’s relatively simple with the following code:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>show code</summary>
@@ -270,14 +261,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # ℹ 62 more rows</code></pre>
 </div>
 </div>
+<p>This code snippet loads the dataset, extracts the lower age limit from the age group, and adds it as a new column in the dataframe.</p>
 </section>
 </section>
 <section id="pyramids" class="level1">
 <h1>pyramids</h1>
-<p>To get a better sense of our population in 2021, we’ll create three charts: a population pyramid by age group, a faceted pyramid by nationality, and a gender group per capita by nationality graph.</p>
+<p>To get a better sense of our population in 2021, we’ll create three charts:</p>
+<ol type="1">
+<li><p>Population by age group for the differences between male and female populations.</p></li>
+<li><p>Faceted pyramid by nationality for structure variation among Bruneians, permanent residents, and temporary residents.</p></li>
+<li><p>Gender and age group per residential capita for subgroup contribution to the overall population.</p></li>
+</ol>
 <section id="population-by-age-group" class="level2">
 <h2 class="anchored" data-anchor-id="population-by-age-group">population by age group</h2>
-<p>In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What’s particularly interesting is the noticeable bulge in the 20-45 age range for men. In this subset, men outnumber women by an average of about 21.5%, compared to the overall difference per age group of around 4.6%.</p>
+<p>In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What’s particularly interesting is the noticeable bulge in the 20-45 age range for men. In this subset, men outnumber women by an average of about 21.5%, compared to the overall average difference per age group of around 4.6%.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>show code</summary>
@@ -367,7 +364,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Temporary residents make up a significant proportion of the general population, constituting up to 34.4% across both genders. Among men aged 20 to 49, this percentage can reach as high as 40% in certain age groups.</p>
+<p>Temporary residents make up a significant proportion of the general population, constituting up to 34.4% across both genders.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>show code</summary>
@@ -454,9 +451,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="per-capita-of-gender-and-nationality" class="level2">
-<h2 class="anchored" data-anchor-id="per-capita-of-gender-and-nationality">per capita of gender and nationality</h2>
+<section id="gender-and-age-group-per-residential-capita" class="level2">
+<h2 class="anchored" data-anchor-id="gender-and-age-group-per-residential-capita">Gender and age group per residential capita</h2>
 <p>The proportion of temporary residents in the 20-45 age group is pretty huge, with over 70% of them falling into this range.</p>
+<p>I think the current distribution really shows how important temporary workers are to our economy and the labour gaps we’re facing. Most of these immigrants are in the 20-45 age range, which makes you wonder if we should let them stay on as permanent residents or even citizens, especially since they’ve contributed so much to nation-building during the prime of their working lives. Are we ready for this, and will they fit in a way that feels right to Bruneians? Plus, how will our migration policies change as our young Bruneian population ages and starts to fill these age groups and labour roles?</p>
 <div class="cell">
 <details class="code-fold">
 <summary>show code</summary>
@@ -505,9 +503,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>This big chunk of the population raises some interesting questions about what their presence means for us. The main question is whether we should let these temporary residents stay as permanent residents or even citizens to keep our population and workforce stable. If we need these workers long-term to support the economy, what are the effects of integrating them into our society? Are we ready to support their integration, and will they fit into the community in a way that feels right to Bruneians?</p>
-<p>Also, since many of these temporary residents spend most of their prime working years in Brunei, should there be a way for them to become citizens since they’ve contributed to nation-building? How will our migration policies change, especially as our mostly young Bruneian population gets older and starts filling these age groups/labour roles?</p>
-<p>Going back to the original question: why aren’t there more locals running their own businesses? Maybe Thomas was only seeing part of the picture. It’s tough to say since there are many factors at play. It seems to be a mix of having a young local population and a cultural aversion for front-facing or physical labor roles. It would be interesting to find out which parts of the workforce these temporary residents are in—especially the men. What industries are they in, and are they taking on roles that the local (predominantly male) workforce can’t handle?</p>
+<p>Going back to the original question: why aren’t there more locals running their own businesses? Maybe Thomas was only seeing part of the picture. It’s hard to say since there are so many factors at play. It could be a mix of having a young local population and a cultural aversion to front-facing or physical labour roles. Maybe Bruneian business owners don’t even want to hire locals or can’t pay local wages, which is an even bigger issue.</p>
+<p>It would be interesting to find out exactly where these temporary residents are working—especially the men. What industries are they in, and are they taking on roles that the local (mostly male) workforce can’t handle?</p>
 
 
 </section>

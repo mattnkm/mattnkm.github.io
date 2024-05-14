@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.554">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -203,23 +203,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="introduction" class="level1">
 <h1>introduction</h1>
-<p>Last week, I found myself back in Brunei—not for the usual family visit, but for a bunch of work meetings and to give a talk on data science.</p>
-<p>It was a real blink-and-you-miss-it trip; barely three days on the ground.</p>
-<p>In true Bruneian fashion, we filled the time between meetings and talks by dining out. I think it was by our fourth restaurant visit that my colleague Thomas—a Kiwi and a first-timer in Brunei—asked in the most hilariously earnest way: “why aren’t there any locals running their own businesses?”</p>
-<p>To be honest, I didn’t know — I spent most of my first 18 years there, and it had always really been this . I mean knew we had a population of more or less half a million, but that was really the limit of what I could offer him.</p>
+<p>Last week, I found myself back in Brunei—not for the usual family visit, but for a series of work meetings and to give a talk on data science.</p>
+<p>It was a blink-and-you-miss-it trip; barely three days on the ground.</p>
+<p>In true Bruneian fashion, we spent the time between meetings and talks dining out. By our fourth restaurant visit, my colleague Thomas—a Kiwi and a first-timer in Brunei—asked in the most hilariously earnest way: “Why aren’t there any locals running their own businesses?”</p>
+<p>To be honest, I didn’t know. I spent most of my first 18 years there, and it had always been like this. I knew we had a population of around half a million, but that was about all I could offer him.</p>
 </section>
 <section id="data" class="level1">
 <h1>data</h1>
 <p>That was the inspiration for this post.</p>
-<p>I managed to collate and convert the terrible <code>.pdf</code> from the Department of Statistics into some usable tables.</p>
-<p>Thinking if anyone stumbled upon this blog, they’d maybe want to recreate this.</p>
-<p>The main data sets I collated from the table is the age group by nationality table (<code>BN_age_group_nationality.xlsx</code> in this post’s repo) from the published 2021 national census.</p>
+<p>I managed to collate and convert the terrible .pdf from the Department of Statistics into some usable tables. If anyone stumbles upon this blog, they might want to recreate this.</p>
+<p>The main data sets I compiled include the age group by nationality table (BN_age_group_nationality.xlsx in this post’s repo) from the published 2021 national census.</p>
 <p>The main data structure is pretty simple:</p>
 <ol type="1">
-<li><code>age_group</code>: Mostly at 5-year division, top-coded at 85+</li>
-<li><code>type</code>: categorical options at total, bruneian, permanent_resident, and temporary_resident</li>
-<li><code>male</code>: total number of males</li>
-<li><code>female</code>: total number of females</li>
+<li><p><code>age_group</code>: Mostly in 5-year divisions, top-coded at 85+</p></li>
+<li><p><code>type</code>: Categorical options include total, Bruneian, permanent_resident, and temporary_resident</p></li>
+<li><p><code>male</code>: Total number of males</p></li>
+<li><p><code>female</code>: Total number of females</p></li>
 </ol>
 <div class="cell">
 <details class="code-fold">
@@ -275,10 +274,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="pyramids" class="level1">
 <h1>pyramids</h1>
-<p>To get a better sense of our population in 2021, we’ll make 3 pyramids for the total by age group, a facet by nationality, and a per capita by nationality graph.</p>
+<p>To get a better sense of our population in 2021, we’ll create three charts: a population pyramid by age group, a faceted pyramid by nationality, and a gender group per capita by nationality graph.</p>
 <section id="population-by-age-group" class="level2">
 <h2 class="anchored" data-anchor-id="population-by-age-group">population by age group</h2>
-<p>In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What I find particularly interesting is the odd bulge at around 20-45 for men. At this subset, men outnumbered women by an average of about 21.5%, compared to the overall difference per age group of around 4.6%.</p>
+<p>In the grand scheme of things, men outnumber women in Brunei by around 11.4%. What’s particularly interesting is the noticeable bulge in the 20-45 age range for men. In this subset, men outnumber women by an average of about 21.5%, compared to the overall difference per age group of around 4.6%.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>show code</summary>
@@ -305,8 +304,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">25000</span>, <span class="dv">25000</span>) <span class="co"># set limits aesthetics</span></span>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"total"</span>,</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"age group"</span>,</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"age group"</span>,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"total"</span>,</span>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"population by age group"</span></span>
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> <span class="co"># change color with brewer</span></span>
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>) <span class="sc">+</span></span>
@@ -323,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="age-groups-by-nationality" class="level2">
 <h2 class="anchored" data-anchor-id="age-groups-by-nationality">age groups by nationality</h2>
-<p>This is where we really see the reason why.</p>
+<p>This is where the real issue becomes clear. Our local population is relatively young, and it seems we are compensating for the shortage of young Bruneians with temporary residents.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>show code</summary>
@@ -352,9 +351,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># limits = c(-30000, 30000) # set limits aesthetics</span></span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"total"</span>,</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"age group"</span>,</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"population by age group"</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"age group"</span>,</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"total"</span>,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"population by nationality"</span></span>
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> <span class="co"># change color with brewer</span></span>
 <span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>) <span class="sc">+</span></span>
 <span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>type) <span class="sc">+</span></span>
@@ -368,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>We can see here that temporary residents make up quite a large proportion of the general population. In fact, overall, they constitute up to 34.4% across both genders.</p>
+<p>Temporary residents make up a significant proportion of the general population, constituting up to 34.4% across both genders. Among men aged 20 to 49, this percentage can reach as high as 40% in certain age groups.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>show code</summary>
@@ -414,7 +413,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 18 85+           78.7              18.0                3.28</code></pre>
 </div>
 </div>
-<p>Among men aged 20 to 49, the percentage of temporary residents can reach as high as 40% in certain age groups.</p>
+<p>Among men aged 20 to 49, this percentage can reach as high as 40% in certain age groups.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>show code</summary>
@@ -455,55 +454,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="per-capita-by-nationality" class="level2">
-<h2 class="anchored" data-anchor-id="per-capita-by-nationality">per capita by nationality</h2>
-<p>Final pyramids show per capita of the age group and gender. It is the most telling of the nation’s overall population structure.</p>
-<p>We can draw our own conclusions here on the implications on the Bruneian system.</p>
+<section id="per-capita-of-gender-and-nationality" class="level2">
+<h2 class="anchored" data-anchor-id="per-capita-of-gender-and-nationality">per capita of gender and nationality</h2>
+<p>The proportion of temporary residents in the 20-45 age group is pretty huge, with over 70% of them falling into this range.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>show code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>age_group <span class="sc">%&gt;%</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">!=</span> <span class="st">"total"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_m =</span> <span class="fu">sum</span>(male),</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">total_f =</span> <span class="fu">sum</span>(female),</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">per capita male</span><span class="st">`</span> <span class="ot">=</span> (male<span class="sc">/</span>total_m) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">per capita female</span><span class="st">`</span> <span class="ot">=</span> (female<span class="sc">/</span>total_f) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(lower_age, <span class="st">`</span><span class="at">per capita male</span><span class="st">`</span>, <span class="st">`</span><span class="at">per capita female</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">melt</span>(<span class="at">variable.name =</span> <span class="st">"gender"</span>,</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">value.name =</span> <span class="st">"total"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">fill =</span> gender, </span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">x =</span> lower_age, </span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> <span class="fu">ifelse</span>(</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>               <span class="at">test =</span> gender <span class="sc">==</span> <span class="st">"per capita male"</span>,</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>               <span class="co"># flip the values to the negative</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">yes =</span> <span class="sc">-</span>total,</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">no =</span> total),</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>             )) <span class="sc">+</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>         <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># flip the y-axis</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>type) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shelf</span>(gganimate, png, gifski)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>pop_pyr <span class="ot">&lt;-</span> age_group <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">!=</span> <span class="st">"total"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_m =</span> <span class="fu">sum</span>(male),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">total_f =</span> <span class="fu">sum</span>(female),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">per capita m</span><span class="st">`</span> <span class="ot">=</span> (male<span class="sc">/</span>total_m) <span class="sc">*</span>  <span class="dv">100</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">per capita f</span><span class="st">`</span> <span class="ot">=</span> (female<span class="sc">/</span>total_f) <span class="sc">*</span>  <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>male, <span class="sc">-</span>female, <span class="sc">-</span>total_m, <span class="sc">-</span>total_f) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">melt</span>(<span class="at">variable.name =</span> <span class="st">"gender"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">value.name =</span> <span class="st">"total"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">fill =</span> gender, </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">x =</span> lower_age, </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">test =</span> gender <span class="sc">==</span> <span class="st">"per capita m"</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>               <span class="co"># flip the values to the negative</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">yes =</span> <span class="sc">-</span>total,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">no =</span> total),</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>             )) <span class="sc">+</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
 <span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> abs, <span class="co"># set as absolute to remove negative sign</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="dv">20</span>) <span class="co"># set limits aesthetics</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">18</span>, <span class="dv">18</span>) <span class="co"># set limits aesthetics</span></span>
 <span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
 <span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"total"</span>,</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"age group"</span>,</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"population by age group"</span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> <span class="co"># change color with brewer</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"age group"</span>,</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"% per capita"</span>,</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"% per capita by age group/nationality"</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  )  <span class="sc">+</span> </span>
 <span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>) <span class="sc">+</span></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="co"># animate</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_states</span>(type, <span class="at">transition_length =</span> <span class="dv">2</span>, <span class="at">state_length =</span> <span class="dv">1</span>)</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>pop_pyr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="population_pyramid_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="population_pyramid_files/figure-html/unnamed-chunk-7-1.gif" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
+<p>This big chunk of the population raises some interesting questions about what their presence means for us. The main question is whether we should let these temporary residents stay as permanent residents or even citizens to keep our population and workforce stable. If we need these workers long-term to support the economy, what are the effects of integrating them into our society? Are we ready to support their integration, and will they fit into the community in a way that feels right to Bruneians?</p>
+<p>Also, since many of these temporary residents spend most of their prime working years in Brunei, should there be a way for them to become citizens since they’ve contributed to nation-building? How will our migration policies change, especially as our mostly young Bruneian population gets older and starts filling these age groups/labour roles?</p>
+<p>Going back to the original question: why aren’t there more locals running their own businesses? Maybe Thomas was only seeing part of the picture. It’s tough to say since there are many factors at play. It seems to be a mix of having a young local population and a cultural aversion for front-facing or physical labor roles. It would be interesting to find out which parts of the workforce these temporary residents are in—especially the men. What industries are they in, and are they taking on roles that the local (predominantly male) workforce can’t handle?</p>
 
 
 </section>
@@ -589,6 +593,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/mattnkm\.github\.io");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -623,7 +645,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

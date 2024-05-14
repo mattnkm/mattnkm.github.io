@@ -13,24 +13,25 @@ about:
     - icon: twitter
       text: Twitter
       href: https://twitter.com/mattnkm
+    - icon: google
+      text: Scholar
+      href: https://scholar.google.com/citations?user=4f8ZKfAAAAAJ
 ---
 
-### This content appears above the formatted about page content.
-
 ::: {#hero-heading}
-Finley Malloc is the Chief Data Scientist at Wengo Analytics. When not innovating on data platforms, Finley enjoys spending time unicycling and playing with her pet iguana.
+I'm a data scientist and Scientia Fellow (woo!) at the [City Futures Research Centre](https://cityfutures.ada.unsw.edu.au/). I grew up in Brunei until I was 18, then spent most of my life in London and Sydney.
+
+I work on a whole bunch of projects, mostly focusing on urban analytics and property market analysis. I also do a lot of consulting on data, tech development, and analytics through the research centre (reach out [here](https://cityfutures.ada.unsw.edu.au/about-us/our-profiles/matthew-ng/)).
+
+I love learning about urban systems and modeling them, and I care deeply about issues like housing, affordability, and accessibility.
+
+When I'm not writing code, I'm usually out running, trying insufferably to make it my defining trait.
 
 ## Education
 
-University of California, San Diego \| San Diego, CA PhD in Mathematics \| Sept 2011 - June 2015
+UCL Bartlett \| PhD in Spatial Data Science \| 2016 - 2019
 
-Macalester College \| St. Paul MA B.A in Economics \| Sept 2007 - June 2011
+UCL Bartlett \| MSc in International Planning \| 2013 - 2014
 
-## Experience
-
-Wengo Analytics \| Head Data Scientist \| April 2018 - present
-
-GeoScynce \| Chief Analyst \| Sept 2012 - April 2018
+University of Manchester \| BSc (Hons) in Biology \| 2009 - 2013
 :::
-
-### This content appears below the formatted about page content.

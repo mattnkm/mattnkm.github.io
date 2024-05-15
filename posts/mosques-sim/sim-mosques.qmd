@@ -1,0 +1,23 @@
+---
+title: "sim_mosques"
+author: "Matthew Ng"
+date: "2024-05-20"
+categories: [accessibility, Brunei]
+format:
+  html:
+    code-fold: true
+    code-summary: "show code"
+---
+
+```{r}
+library(librarian)
+shelf(sf, tidyverse, readxl)
+```
+
+# data
+
+```{r}
+read_xlsx("census_bn_21.xlsx") %>% 
+  group_by(Mukim) %>% 
+  summarise(pop = sum(Total))
+```

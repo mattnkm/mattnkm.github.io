@@ -1,0 +1,15 @@
+{
+  "hash": "404ecaa5fca8de29b0e9f6c86025efb4",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"sim_mosques\"\nauthor: \"Matthew Ng\"\ndate: \"2024-05-20\"\ncategories: [accessibility, Brunei]\nformat:\n  html:\n    code-fold: true\n    code-summary: \"show code\"\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(librarian)\nshelf(sf, tidyverse, readxl)\n```\n:::\n\n\n# data\n\n\n::: {.cell}\n\n```{.r .cell-code}\nread_xlsx(\"census_bn_21.xlsx\") %>% \n  group_by(Mukim) %>% \n  summarise(pop = sum(Total))\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# A tibble: 18 × 2\n   Mukim                pop\n   <chr>              <dbl>\n 1 Berakas A          28311\n 2 Berakas B          39284\n 3 Burong Pingai Ayer  1459\n 4 Gadong A           35424\n 5 Gadong B           38067\n 6 Kianggeh            8102\n 7 Kilanas            24981\n 8 Kota Batu          12676\n 9 Lumapas             8058\n10 Mentiri            39324\n11 Pangkalan Batu     15860\n12 Peramu              1151\n13 Saba                 827\n14 Sengkurong         40972\n15 Serasa             18569\n16 Sungai Kebun        4282\n17 Sungai Kedayan       241\n18 Tamoi                942\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
